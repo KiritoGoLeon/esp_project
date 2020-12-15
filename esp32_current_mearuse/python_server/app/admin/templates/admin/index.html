@@ -1,0 +1,135 @@
+{% extends "nav_base.html" %}
+{% block content %}
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-6 col-lg-4 col-xl-2">
+            <nav class="nav nav-pills nav-justified flex-column">
+                <a class="nav-item nav-link " href="#">修改密码</a>
+                <a class="nav-item nav-link  active" href="#">管理用户</a>
+                <a class="nav-item nav-link " href="#">管理部门</a>
+            </nav>
+        </div>
+        <div class="col-sm-9 col-md-6 col-lg-8 col-xl-10">
+            <div class="row">
+                <!--<div class="col-sm-3 col-md-6 col-lg-4 col-xl-2">-->
+                    <!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">添加用户-->
+                    <!--</button>-->
+                <!--</div>-->
+                <div class="col-sm-3 col-md-6 col-lg-8 col-xl-10">
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    {% for message in messages %}
+                    <h3><p class="text-danger">{{ message }}</p></h3>
+                    {% endfor %}
+                    {% endif %}
+                    {% endwith %}
+                </div>
+            </div>
+            <!-- 模态框 -->
+            <div class="modal fade" id="myModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <!-- 模态框头部 -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">消息提示</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <!-- 模态框主体 -->
+                        <div class="modal-body">
+                            <form action="" method="post" novalidate>
+                                {{ form.hidden_tag() }}
+								<input type="text" class="form-control hidden" id="useraccount" placeholder="请输入名称">
+                                <p>
+                                    {{ form.card_name.label }}<br>
+                                    {{ form.card_name(size=32) }}<br>
+                                    {% for error in form.card_name.errors %}
+                                    <span style="color: red;">[{{ error }}]</span>
+                                    {% endfor %}
+                                </p>
+								  <p>
+                                    {{ form.card_account.label }}<br>
+                                    {{ form.card_account(size=32) }}<br>
+                                    {% for error in form.card_account.errors %}
+                                    <span style="color: red;">[{{ error }}]</span>
+                                    {% endfor %}
+                                </p>
+								 <p>
+                                    {{ form.card_passwd.label }}<br>
+                                    {{ form.card_passwd(size=32) }}<br>
+                                    {% for error in form.card_passwd.errors %}
+                                    <span style="color: red;">[{{ error }}]</span>
+                                    {% endfor %}
+                                </p>
+                                </p>
+                                <p>{{ form.submit() }}</p>
+                            </form>
+
+                        </div>
+                        <!-- 模态框底部 -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <link href="https://unpkg.com/bootstrap-table@1.15.4/dist/bootstrap-table.min.css" rel="stylesheet">
+            <script src="https://unpkg.com/bootstrap-table@1.15.4/dist/bootstrap-table.min.js"></script>
+            <table id="table">
+                <thead>
+                <tr>
+                    <th data-field="role">角色</th>
+                    <th data-field="username">账号</th>
+                    <th data-field="passwd">邮箱</th>
+
+					<th data-field="card_account">打卡账号</th>
+					<th data-field="card_name">打卡账号</th>
+					<th data-field="card_passwd">打卡密码</th>
+					<th data-field="card_dir">缓存目录</th>
+                    <th data-field="create_time">创建时间</th>
+                    <th data-field="operate" data-formatter="operateFormatter" data-events="operateEvents">操作</th>
+                </tr>
+                </thead>
+            </table>
+            <script>
+                 $("#useraccount").hide();
+                var $table = $('#table')
+                $(function () {
+                    var data2 = eval('{{result_json|safe }}');
+                    $table.bootstrapTable({
+                        undefinedText: 'N/A',
+                        data: data2
+                    })
+                });
+                // 操作栏
+                window.operateEvents = {
+                    'click .edit': function (e, value, row, index) {
+						var data = JSON.stringify($("#table").bootstrapTable('getData')); //获取全部数据
+						var data_json = JSON.parse(data);
+						$("#useraccount").val(data_json[index].username)
+                    	$('#card_name').val(data_json[index].card_name);
+                    	$('#card_passwd').val(data_json[index].card_passwd);
+                    	$('#card_account').val(data_json[index].card_account);
+
+						$('#myModal').modal('show')
+                    },
+                    'click .remove': function (e, value, row, index) {
+
+                    }
+                };
+                // 控制事件的回调函数
+                function operateFormatter(value, row, index) {
+                    return [
+                        '<button type="button" class="edit btn btn-success">编辑</button>',
+                        '<button type="button" class="remove btn btn-danger">移除</button>',
+                    ].join('')
+                }
+            </script>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
