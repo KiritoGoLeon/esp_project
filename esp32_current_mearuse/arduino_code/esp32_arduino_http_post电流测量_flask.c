@@ -2,6 +2,14 @@
 #include "HTTPClient.h"
 #include <ArduinoJson.h>
 
+/** PIN **
+ * OLED:VCC  --- ESP32:3.3V
+ * OLED:GND  --- ESP32:GND
+ * OLED:SCL  --- ESP32:D22
+ * OLED:SDA  --- ESP32:D21
+ * * 
+ * */
+
 
 
 // -- ina
