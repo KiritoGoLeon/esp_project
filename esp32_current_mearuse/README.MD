@@ -17,6 +17,17 @@ GPIO:
 
 ```
 
+platformIO依赖: arduinojson  ina2XX
+
+```
+[env:esp32doit-devkit-v1]
+platform = espressif32
+board = esp32doit-devkit-v1
+framework = arduino
+monitor_speed = 115200
+lib_deps = bblanchon/ArduinoJson@^6.17.2
+```
+
 
 
 传输协议: http post

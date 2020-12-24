@@ -3,10 +3,10 @@
 #include <ArduinoJson.h>
 
 /** PIN **
- * OLED:VCC  --- ESP32:3.3V
- * OLED:GND  --- ESP32:GND
- * OLED:SCL  --- ESP32:D22
- * OLED:SDA  --- ESP32:D21
+ * INA:VCC  --- ESP32:3.3V
+ * INA:GND  --- ESP32:GND
+ * INA:SCL  --- ESP32:D22
+ * INA:SDA  --- ESP32:D21
  * * 
  * */
 
